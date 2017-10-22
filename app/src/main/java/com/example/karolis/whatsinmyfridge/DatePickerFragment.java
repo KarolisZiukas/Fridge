@@ -8,10 +8,13 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.widget.DatePicker;
+import android.widget.Toast;
 
 import java.util.Calendar;
 
 public class DatePickerFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener {
+
+
 
     @NonNull
     @Override
@@ -21,11 +24,11 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
         int month = calendar.get(Calendar.MONTH);
         int year = calendar.get(Calendar.YEAR);
 
-        return new DatePickerDialog(getActivity(), this, day, month, year);
+
+        return new DatePickerDialog(getActivity(), this, year,  month, day);
     }
 
     @Override
     public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
-
     }
 }

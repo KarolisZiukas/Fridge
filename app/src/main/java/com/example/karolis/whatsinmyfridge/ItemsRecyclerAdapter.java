@@ -15,10 +15,12 @@ import butterknife.ButterKnife;
 
 public class ItemsRecyclerAdapter extends RecyclerView.Adapter<ItemsRecyclerAdapter.ItemViewHolder> {
 
-    List<TempModel> tempModels;
+    List<FoodItemModel> foodItemModels;
+    private final RemoveItemOnClickListener removeItemOnClickListener;
 
-    public ItemsRecyclerAdapter(List<TempModel> tempModels){
-        this.tempModels = tempModels;
+    public ItemsRecyclerAdapter(List<FoodItemModel> foodItemModels,  RemoveItemOnClickListener removeItemOnClickListener){
+        this.foodItemModels = foodItemModels;
+        this.removeItemOnClickListener = removeItemOnClickListener;
     }
     @Override
     public ItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -27,26 +29,39 @@ public class ItemsRecyclerAdapter extends RecyclerView.Adapter<ItemsRecyclerAdap
     }
 
     @Override
-    public void onBindViewHolder(ItemViewHolder holder, int position) {
-        holder.itemNameTextView.setText(tempModels.get(0).getName());
-        holder.itemExpirationTextView.setText(tempModels.get(0).getData());
+    public void onBindViewHolder(final ItemViewHolder holder, int position) {
+        holder.itemNameTextView.setText(foodItemModels.get(position).getName());
+        holder.itemExpirationTextView.setText(foodItemModels.get(position).getExpirationdate());
 
+        holder.removeItemImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                removeItemOnClickListener.onItemClick(foodItemModels.get(holder.getAdapterPosition()));
+                notifyDataSetChanged();
+            }
+        });
     }
 
     @Override
     public int getItemCount() {
-        return tempModels.size();
+        return foodItemModels.size();
     }
 
     class ItemViewHolder extends RecyclerView.ViewHolder{
         @BindView(R.id.item_photo_image_view) ImageView itemPhotoImageView;
         @BindView(R.id.item_name_text_view) TextView itemNameTextView;
         @BindView(R.id.item_expiration_text_view) TextView itemExpirationTextView;
-
+        @BindView(R.id.remove_item_image_view) ImageView removeItemImageView;
 
         public ItemViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
         }
     }
+
+    public interface RemoveItemOnClickListener {
+        void onItemClick(FoodItemModel foodItemModel);
+    }
+
+
 }

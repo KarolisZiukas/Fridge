@@ -11,6 +11,9 @@ android {
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
+    configurations.all {
+        resolutionStrategy.force 'com.google.code.findbugs:jsr305:1.3.9'
+    }
     buildTypes {
         release {
             minifyEnabled false
@@ -32,6 +35,16 @@ dependencies {
     /* Card View*/
     compile 'com.android.support:cardview-v7:26.+'
     compile 'com.android.support:recyclerview-v7:26.+'
+    /* GSON */
+    compile 'com.google.code.gson:gson:2.8.2'
+    /*Hawk*/
+    compile 'com.orhanobut:hawk:2.0.1'
+    /*RxJava2*/
+    compile 'io.reactivex.rxjava2:rxjava:2.1.5'
+    /*Dagger2*/
+    compile 'com.google.dagger:dagger-android:2.12'
+    compile 'com.google.dagger:dagger-android-support:2.12' // if you use the support libraries
+    annotationProcessor 'com.google.dagger:dagger-android-processor:2.12'
 
     compile 'com.android.support:design:26.1.0'
     testCompile 'junit:junit:4.12'

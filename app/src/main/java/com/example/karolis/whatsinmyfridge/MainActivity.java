@@ -14,11 +14,13 @@ import butterknife.ButterKnife;
 public class MainActivity extends AppCompatActivity {
 
     @BindView(R.id.add_item_action_button) FloatingActionButton addItemActionButton;
+    public ItemsListFragment itemsListFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        itemsListFragment = new ItemsListFragment();
         ButterKnife.bind(MainActivity.this);
         loadList();
     }
@@ -28,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
     public void loadList(){
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.main_frame_layout, new ItemsListFragment());
+        fragmentTransaction.replace(R.id.main_frame_layout, itemsListFragment);
         fragmentTransaction.commit();
 
         addItemActionButton.setOnClickListener(new View.OnClickListener() {
@@ -42,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void dialogShow() {
         DialogFragment fragment = new AddItemDialog();
+        fragment.setTargetFragment(itemsListFragment, 0);
         fragment.show(getSupportFragmentManager(), "tag");
     }
 
