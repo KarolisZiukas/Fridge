@@ -20,6 +20,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+//        ((FridgeApplication)getApplication()).getMainComponent().inject(MainActivity.this);
         itemsListFragment = new ItemsListFragment();
         ButterKnife.bind(MainActivity.this);
         loadList();

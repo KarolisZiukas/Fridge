@@ -1,7 +1,9 @@
 package com.example.karolis.whatsinmyfridge;
 
 
-public class FoodItemModel {
+import io.realm.RealmObject;
+
+public class FoodItemModel extends RealmObject{
 
     private String name;
     private String expirationdate;
