@@ -11,18 +11,23 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.orhanobut.hawk.Hawk;
+import com.example.karolis.whatsinmyfridge.Managers.DatabaseManager;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.realm.RealmResults;
 
 
 public class ItemsListFragment extends Fragment implements DialogCallbackContract, ItemsRecyclerAdapter.RemoveItemOnClickListener{
 
+
     @BindView(R.id.items_recycler_view) RecyclerView itemsRecyclerView;
+    @Inject DatabaseManager databaseManager;
     List<FoodItemModel> foodItemModels = new ArrayList<FoodItemModel>();
     ItemsRecyclerAdapter itemsRecyclerAdapter;
     @Nullable
@@ -36,6 +41,11 @@ public class ItemsListFragment extends Fragment implements DialogCallbackContrac
         a.setExpirationdate("today");
         a.setName("pepper");
         a.setQuantity(5);
+        databaseManager.insertNewItem(a);
+        RealmResults<FoodItemModel> list =  databaseManager.getAllItems();
+        for(FoodItemModel item : list){
+            Toast.makeText(getContext(), item.getName(), Toast.LENGTH_LONG).show();
+        }
         FoodItemModel b = new FoodItemModel();
         b.setExpirationdate("today");
         b.setName("pepper");
@@ -53,6 +63,7 @@ public class ItemsListFragment extends Fragment implements DialogCallbackContrac
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ((FridgeApplication) getActivity().getApplication()).getMainComponent().inject(this);
     }
 
     @Override
@@ -60,12 +71,6 @@ public class ItemsListFragment extends Fragment implements DialogCallbackContrac
         Toast.makeText(getContext(), "resumed", Toast.LENGTH_LONG).show();
         super.onResume();
     }
-
-    public void addItem(FoodItemModel foodItemModel){
-        foodItemModels.add(foodItemModel);
-        itemsRecyclerAdapter.notifyDataSetChanged();
-    }
-
 
     @Override
     public void passData(FoodItemModel foodItemModel) {
