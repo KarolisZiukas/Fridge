@@ -20,7 +20,6 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import io.realm.RealmResults;
 
 
 public class ItemsListFragment extends Fragment implements DialogCallbackContract, ItemsRecyclerAdapter.RemoveItemOnClickListener{
@@ -37,23 +36,7 @@ public class ItemsListFragment extends Fragment implements DialogCallbackContrac
         ButterKnife.bind(this, view);
         itemsRecyclerView.setHasFixedSize(true);
         itemsRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL));
-        FoodItemModel a = new FoodItemModel();
-        a.setExpirationdate("today");
-        a.setName("pepper");
-        a.setQuantity(5);
-        databaseManager.insertNewItem(a);
-        RealmResults<FoodItemModel> list =  databaseManager.getAllItems();
-        for(FoodItemModel item : list){
-            Toast.makeText(getContext(), item.getName(), Toast.LENGTH_LONG).show();
-        }
-        FoodItemModel b = new FoodItemModel();
-        b.setExpirationdate("today");
-        b.setName("pepper");
-        b.setQuantity(5);
-        foodItemModels.add(a);
-        foodItemModels.add(b);
-
-        itemsRecyclerAdapter = new ItemsRecyclerAdapter(foodItemModels, this);
+        itemsRecyclerAdapter = new ItemsRecyclerAdapter(databaseManager.getAllItems(), this);
 
         itemsRecyclerView.setAdapter(itemsRecyclerAdapter);
         return view;
@@ -74,13 +57,13 @@ public class ItemsListFragment extends Fragment implements DialogCallbackContrac
 
     @Override
     public void passData(FoodItemModel foodItemModel) {
-        foodItemModels.add(foodItemModel);
+        databaseManager.insertNewItem(foodItemModel);
         itemsRecyclerAdapter.notifyDataSetChanged();
-        Toast.makeText(getContext(), "pass", Toast.LENGTH_LONG).show();
     }
 
     @Override
     public void onItemClick(FoodItemModel foodItemModel) {
-        foodItemModels.remove(foodItemModel);
+        databaseManager.removeItem(foodItemModel.getName());
+        itemsRecyclerAdapter.notifyDataSetChanged();
     }
 }

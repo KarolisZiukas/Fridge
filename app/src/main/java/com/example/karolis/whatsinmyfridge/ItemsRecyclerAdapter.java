@@ -8,17 +8,16 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.util.List;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.realm.RealmResults;
 
 public class ItemsRecyclerAdapter extends RecyclerView.Adapter<ItemsRecyclerAdapter.ItemViewHolder> {
 
-    List<FoodItemModel> foodItemModels;
+    RealmResults<FoodItemModel> foodItemModels;
     private final RemoveItemOnClickListener removeItemOnClickListener;
 
-    public ItemsRecyclerAdapter(List<FoodItemModel> foodItemModels,  RemoveItemOnClickListener removeItemOnClickListener){
+    public ItemsRecyclerAdapter(RealmResults<FoodItemModel> foodItemModels, RemoveItemOnClickListener removeItemOnClickListener){
         this.foodItemModels = foodItemModels;
         this.removeItemOnClickListener = removeItemOnClickListener;
     }
@@ -32,7 +31,7 @@ public class ItemsRecyclerAdapter extends RecyclerView.Adapter<ItemsRecyclerAdap
     public void onBindViewHolder(final ItemViewHolder holder, int position) {
         holder.itemNameTextView.setText(foodItemModels.get(position).getName());
         holder.itemExpirationTextView.setText(foodItemModels.get(position).getExpirationdate());
-
+        holder.quantityTextView.setText("" + foodItemModels.get(position).getQuantity());
         holder.removeItemImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -52,7 +51,7 @@ public class ItemsRecyclerAdapter extends RecyclerView.Adapter<ItemsRecyclerAdap
         @BindView(R.id.item_name_text_view) TextView itemNameTextView;
         @BindView(R.id.item_expiration_text_view) TextView itemExpirationTextView;
         @BindView(R.id.remove_item_image_view) ImageView removeItemImageView;
-
+        @BindView(R.id.quantity_text_view) TextView quantityTextView;
         public ItemViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
