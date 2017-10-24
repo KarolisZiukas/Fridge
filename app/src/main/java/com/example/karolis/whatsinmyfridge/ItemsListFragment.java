@@ -13,9 +13,6 @@ import android.widget.Toast;
 
 import com.example.karolis.whatsinmyfridge.Managers.DatabaseManager;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.inject.Inject;
 
 import butterknife.BindView;
@@ -27,13 +24,13 @@ public class ItemsListFragment extends Fragment implements DialogCallbackContrac
 
     @BindView(R.id.items_recycler_view) RecyclerView itemsRecyclerView;
     @Inject DatabaseManager databaseManager;
-    List<FoodItemModel> foodItemModels = new ArrayList<FoodItemModel>();
     ItemsRecyclerAdapter itemsRecyclerAdapter;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.items_recycler_vew, container, false);
         ButterKnife.bind(this, view);
+
         itemsRecyclerView.setHasFixedSize(true);
         itemsRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL));
         itemsRecyclerAdapter = new ItemsRecyclerAdapter(databaseManager.getAllItems(), this);

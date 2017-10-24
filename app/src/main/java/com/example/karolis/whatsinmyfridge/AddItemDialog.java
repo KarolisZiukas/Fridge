@@ -4,6 +4,7 @@ package com.example.karolis.whatsinmyfridge;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.icu.text.SimpleDateFormat;
 import android.os.Build;
 import android.os.Bundle;
@@ -27,6 +28,7 @@ import com.orhanobut.hawk.Hawk;
 
 import org.w3c.dom.Text;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -34,6 +36,8 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static android.app.Activity.RESULT_OK;
 
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class AddItemDialog extends DialogFragment{
@@ -45,20 +49,30 @@ public class AddItemDialog extends DialogFragment{
     @BindView(R.id.add_image_image_button) ImageButton addImageImageButton;
     @BindView(R.id.dialog_expiration_date_text_view) TextView dialogExpirationDateTextView;
     @BindView(R.id.dialog_quantity_text_view) TextView dialogQuantityTextView;
-
+    static final int REQUEST_IMAGE_CAPTURE = 1;
     private final Calendar calendar = Calendar.getInstance();
     private final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-
+    private Bitmap bitmapItemImage;
     DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
         @Override
         public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
             calendar.set(Calendar.YEAR, i);
             calendar.set(Calendar.MONTH, i1);
             calendar.set(Calendar.DAY_OF_MONTH, i2);
-            dialogExpirationDateTextView.setText(simpleDateFormat.format(calendar.getTime()));
+            setExpirationDateButton.setText(simpleDateFormat.format(calendar.getTime()));
 
         }
     };
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+            Bundle extras = data.getExtras();
+            bitmapItemImage = (Bitmap) extras.get("data");
+            addImageImageButton.setImageBitmap(bitmapItemImage);
+//        }
+    }
+
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Nullable
     @Override
@@ -74,6 +88,8 @@ public class AddItemDialog extends DialogFragment{
                 startActivityForResult(intent, 0);
             }
         });
+
+
         setExpirationDateButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 new DatePickerDialog(getContext(), date, calendar
@@ -106,6 +122,11 @@ public class AddItemDialog extends DialogFragment{
                 foodItemModel.setName(addItemNameEditText.getText().toString());
                 foodItemModel.setExpirationdate(simpleDateFormat.format(calendar.getTime()));
                 foodItemModel.setQuantity(setQuantitySeekBar.getProgress()/10);
+
+                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                bitmapItemImage.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                foodItemModel.setImageByteArray(stream.toByteArray());
+
                 ((DialogCallbackContract)getTargetFragment()).passData(foodItemModel);
                 dismiss();
             }
@@ -116,7 +137,7 @@ public class AddItemDialog extends DialogFragment{
     }
 
     public void InitialValues(){
-        dialogExpirationDateTextView.setText(simpleDateFormat.format(new Date()));
+        setExpirationDateButton.setText(simpleDateFormat.format(new Date()));
         dialogQuantityTextView.setText("" + setQuantitySeekBar.getProgress()/10);
 
     }

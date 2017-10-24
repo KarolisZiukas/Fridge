@@ -7,6 +7,7 @@ public class FoodItemModel extends RealmObject{
 
     private String name;
     private String expirationdate;
+    private byte[] imageByteArray;
     private int quantity;
 
     public String getExpirationdate() {
@@ -31,5 +32,14 @@ public class FoodItemModel extends RealmObject{
 
     public void setQuantity(int quantity) {
         this.quantity = quantity;
+    }
+
+
+    public byte[] getImageByteArray() {
+        return imageByteArray;
+    }
+
+    public void setImageByteArray(byte[] imageByteArray) {
+        this.imageByteArray = imageByteArray;
     }
 }

@@ -15,12 +15,15 @@ public class MainActivity extends AppCompatActivity {
 
     @BindView(R.id.add_item_action_button) FloatingActionButton addItemActionButton;
     public ItemsListFragment itemsListFragment;
-
+    //ToDo shopping list
+    //ToDo categories
+    //Todo Search
+    //ToDo edit info
+    //ToDo reminder before expiring
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-//        ((FridgeApplication)getApplication()).getMainComponent().inject(MainActivity.this);
         itemsListFragment = new ItemsListFragment();
         ButterKnife.bind(MainActivity.this);
         loadList();
@@ -33,7 +36,6 @@ public class MainActivity extends AppCompatActivity {
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.main_frame_layout, itemsListFragment);
         fragmentTransaction.commit();
-
         addItemActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
