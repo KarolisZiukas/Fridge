@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">What\'s In My Fridge</string>
+    <string name="add_item_dialog_expiration_date">Expiration date:</string>
+    <string name="add_item_dialog_add">Add</string>
 </resources>

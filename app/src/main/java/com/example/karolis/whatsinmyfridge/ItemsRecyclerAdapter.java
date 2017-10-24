@@ -1,6 +1,8 @@
 package com.example.karolis.whatsinmyfridge;
 
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,6 +34,10 @@ public class ItemsRecyclerAdapter extends RecyclerView.Adapter<ItemsRecyclerAdap
         holder.itemNameTextView.setText(foodItemModels.get(position).getName());
         holder.itemExpirationTextView.setText(foodItemModels.get(position).getExpirationdate());
         holder.quantityTextView.setText("" + foodItemModels.get(position).getQuantity());
+
+        Bitmap bitmap = BitmapFactory.decodeByteArray(foodItemModels.get(position).getImageByteArray(), 0, foodItemModels.get(position).getImageByteArray().length);
+        holder.itemPhotoImageView.setImageBitmap(bitmap);
+
         holder.removeItemImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -52,13 +58,13 @@ public class ItemsRecyclerAdapter extends RecyclerView.Adapter<ItemsRecyclerAdap
         @BindView(R.id.item_expiration_text_view) TextView itemExpirationTextView;
         @BindView(R.id.remove_item_image_view) ImageView removeItemImageView;
         @BindView(R.id.quantity_text_view) TextView quantityTextView;
-        public ItemViewHolder(View itemView) {
+        ItemViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
         }
     }
 
-    public interface RemoveItemOnClickListener {
+    interface RemoveItemOnClickListener {
         void onItemClick(FoodItemModel foodItemModel);
     }
 
