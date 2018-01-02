@@ -64,14 +64,7 @@ public class AddItemDialog extends DialogFragment{
         }
     };
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-            Bundle extras = data.getExtras();
-            bitmapItemImage = (Bitmap) extras.get("data");
-            addImageImageButton.setImageBitmap(bitmapItemImage);
-//        }
-    }
+
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Nullable
@@ -121,12 +114,13 @@ public class AddItemDialog extends DialogFragment{
                 FoodItemModel foodItemModel = new FoodItemModel();
                 foodItemModel.setName(addItemNameEditText.getText().toString());
                 foodItemModel.setExpirationdate(simpleDateFormat.format(calendar.getTime()));
-                foodItemModel.setQuantity(setQuantitySeekBar.getProgress()/10);
+                foodItemModel.setQuantity(setQuantitySeekBar.getProgress() / 10);
 
                 ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                bitmapItemImage.compress(Bitmap.CompressFormat.PNG, 100, stream);
-                foodItemModel.setImageByteArray(stream.toByteArray());
-
+                if (bitmapItemImage != null){
+                    bitmapItemImage.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                    foodItemModel.setImageByteArray(stream.toByteArray());
+            }
                 ((DialogCallbackContract)getTargetFragment()).passData(foodItemModel);
                 dismiss();
             }
@@ -139,7 +133,14 @@ public class AddItemDialog extends DialogFragment{
     public void InitialValues(){
         setExpirationDateButton.setText(simpleDateFormat.format(new Date()));
         dialogQuantityTextView.setText("" + setQuantitySeekBar.getProgress()/10);
-
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+            Bundle itemImageBundle = data.getExtras();
+            bitmapItemImage = (Bitmap) itemImageBundle.get("data");
+            addImageImageButton.setImageBitmap(bitmapItemImage);
+        }
+    }
 }

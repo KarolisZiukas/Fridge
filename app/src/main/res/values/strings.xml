@@ -2,4 +2,8 @@
     <string name="app_name">What\'s In My Fridge</string>
     <string name="add_item_dialog_expiration_date">Expiration date:</string>
     <string name="add_item_dialog_add">Add</string>
+    <string name="edit_text_hint">enter item you want to add</string>
+    <string name="item_name">item name</string>
+    <string name="expiration_date">expiration date</string>
+    <string name="quantity">quantity</string>
 </resources>
