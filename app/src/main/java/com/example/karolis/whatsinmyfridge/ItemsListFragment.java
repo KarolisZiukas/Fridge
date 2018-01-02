@@ -33,7 +33,7 @@ public class ItemsListFragment extends Fragment implements DialogCallbackContrac
 
         itemsRecyclerView.setHasFixedSize(true);
         itemsRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL));
-        itemsRecyclerAdapter = new ItemsRecyclerAdapter(databaseManager.getAllItems(), this);
+        itemsRecyclerAdapter = new ItemsRecyclerAdapter(databaseManager.getAllItems(), this, getContext());
 
         itemsRecyclerView.setAdapter(itemsRecyclerAdapter);
         return view;

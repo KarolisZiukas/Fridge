@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group
+        android:id="@+id/title"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/navigation_home"
+            android:title="Items List"/>
+        <item
+            android:id="@+id/navigation_schedule"
+            android:title="Shopping list"/>
+        <item
+            android:id="@+id/navigation_reminders"
+            android:title="Categories"/>
+    </group>
+</menu>

@@ -1,6 +1,7 @@
 package com.example.karolis.whatsinmyfridge;
 
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.v7.widget.RecyclerView;
@@ -18,10 +19,11 @@ public class ItemsRecyclerAdapter extends RecyclerView.Adapter<ItemsRecyclerAdap
 
     RealmResults<FoodItemModel> foodItemModels;
     private final RemoveItemOnClickListener removeItemOnClickListener;
-
-    public ItemsRecyclerAdapter(RealmResults<FoodItemModel> foodItemModels, RemoveItemOnClickListener removeItemOnClickListener){
+    private Context context;
+    public ItemsRecyclerAdapter(RealmResults<FoodItemModel> foodItemModels, RemoveItemOnClickListener removeItemOnClickListener, Context context){
         this.foodItemModels = foodItemModels;
         this.removeItemOnClickListener = removeItemOnClickListener;
+        this.context = context;
     }
     @Override
     public ItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -35,9 +37,10 @@ public class ItemsRecyclerAdapter extends RecyclerView.Adapter<ItemsRecyclerAdap
         holder.itemExpirationTextView.setText(foodItemModels.get(position).getExpirationdate());
         holder.quantityTextView.setText("" + foodItemModels.get(position).getQuantity());
 
-        Bitmap bitmap = BitmapFactory.decodeByteArray(foodItemModels.get(position).getImageByteArray(), 0, foodItemModels.get(position).getImageByteArray().length);
-        holder.itemPhotoImageView.setImageBitmap(bitmap);
-
+        if(foodItemModels.get(position).getImageByteArray()!=null) {
+            Bitmap itemPhotoBitmap = BitmapFactory.decodeByteArray(foodItemModels.get(position).getImageByteArray(), 0, foodItemModels.get(position).getImageByteArray().length);
+            holder.itemPhotoImageView.setImageBitmap(itemPhotoBitmap);
+        }
         holder.removeItemImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -45,6 +48,8 @@ public class ItemsRecyclerAdapter extends RecyclerView.Adapter<ItemsRecyclerAdap
                 notifyDataSetChanged();
             }
         });
+
+
     }
 
     @Override
